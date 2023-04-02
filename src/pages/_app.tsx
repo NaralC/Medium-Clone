@@ -1,10 +1,9 @@
-import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { useState } from "react";
-import Box from "../../components/Box";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import "../styles/globals.css";
 
 // For providers (NextUI, Supabase Instance)
 // Also Navbar + Box/Container/Card
@@ -14,13 +13,16 @@ export default function App({ Component, pageProps }: AppProps) {
     createBrowserSupabaseClient()
   );
 
+  useEffect(() => {
+    // import('preline')
+  }, []);
+
   return (
     <SessionContextProvider supabaseClient={supabaseClient}>
-        <Navbar />
-        <Box
-        >
-          <Component {...pageProps} />
-        </Box>
+      <Navbar />
+      <div className="px-10 py-14">
+      <Component {...pageProps} />
+      </div>
     </SessionContextProvider>
   );
 }
