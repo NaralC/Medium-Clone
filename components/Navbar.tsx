@@ -15,7 +15,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="z-50 flex flex-wrap w-full py-4 text-sm bg-white sm:justify-start sm:flex-nowrap dark:bg-gray-800">
+      <header className="z-50 flex flex-wrap w-full py-4 text-sm sm:justify-start sm:flex-nowrap dark:bg-gray-800">
         <nav
           className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between"
           aria-label="Global"
@@ -35,7 +35,7 @@ export default function Navbar() {
                 <div>Hey, {user?.email}</div>
                 <div>
                   <button onClick={() => signOutUser()}>
-                    Login
+                    Logout
                   </button>
                 </div>
               </>
