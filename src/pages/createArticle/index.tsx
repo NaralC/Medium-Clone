@@ -79,7 +79,7 @@ export default function CreateArticle() {
     <>
       <div className="container flex flex-col gap-10">
         <div>
-          <text>Title</text>
+          <div>Title</div>
           <TextArea
             placeholder="Article Title"
             name="title"
@@ -88,7 +88,7 @@ export default function CreateArticle() {
           />
         </div>
         <div>
-          <text>Description</text>
+          <div>Description</div>
           <TextArea
             placeholder="Article Description"
             name="description"
@@ -96,7 +96,7 @@ export default function CreateArticle() {
             onChange={handleChange}
           />
         </div>
-        <text>Posting as {user?.email}</text>
+        <div>Posting as {user?.email}</div>
         <Button onClick={createArticle}>Create Article</Button>
       </div>
     </>
