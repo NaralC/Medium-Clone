@@ -20,8 +20,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionContextProvider supabaseClient={supabaseClient}>
       <Navbar />
-      <div className="px-10 py-14">
-      <Component {...pageProps} />
+      <div className="flex flex-col justify-center w-full px-10 py-5 mx-auto text-center align-middle">
+        <Component {...pageProps} />
       </div>
     </SessionContextProvider>
   );
