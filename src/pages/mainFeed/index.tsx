@@ -11,36 +11,37 @@ export default function MainFeed() {
   const user = useUser();
   const router = useRouter();
 
-  const [articles, setArticles] = useState<{
-    [x: string]: any;
-}[]>([]);
-
-  const getArticles = async () => {
-    try {
-      const { data, error } = await supabaseClient
-        .from("articles")
-        .select("*")
-        .limit(10) // Most recent 10 articles
-
-      console.log(data);
-
-      if (data !== null) {
-        setArticles(data)
-      }
-
-    } catch (error) {
-      console.assert(error);
-    }
-  }
+  const [articles, setArticles] = useState<
+    {
+      [x: string]: any;
+    }[]
+  >([]);
 
   const effectRan = useRef(false);
   useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const { data, error } = await supabaseClient
+          .from("articles")
+          .select("*")
+          .limit(10); // Most recent 10 articles
+
+        console.log(data);
+
+        if (data !== null) {
+          setArticles(data);
+        }
+      } catch (error) {
+        console.assert(error);
+      }
+    };
+
     if (effectRan.current === false) getArticles();
-  
+
     return () => {
       effectRan.current = true;
-    }
-  })
+    };
+  });
 
   return (
     <>
@@ -48,7 +49,7 @@ export default function MainFeed() {
       <div className="text-4xl">Check out community articles</div>
       <div>
         {articles.map((article) => {
-          return (<ArticleCard article={article} key={article.id} />)
+          return <ArticleCard article={article} key={article.id} />;
         })}
       </div>
     </>
