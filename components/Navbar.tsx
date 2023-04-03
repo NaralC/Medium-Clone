@@ -1,6 +1,6 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { Button } from "@tremor/react";
+import { Button } from "../components/Button"
 import Link from "next/link";
 
 export default function Navbar() {

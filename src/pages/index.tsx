@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
     <div className="">
-      <text>The Future of Article Sharing</text>
+      <div>The Future of Article Sharing</div>
       <div className="text-center">yo?</div>
       <div className="text-5xl text-center">
         Wow this generic CRUD app is going to change the world fosho

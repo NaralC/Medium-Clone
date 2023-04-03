@@ -43,8 +43,8 @@ export default function MainFeed() {
 
   return (
     <>
-      <text className="text-7xl">Main Feed</text>
-      <text className="text-4xl">Check out community articles</text>
+      <div className="text-7xl">Main Feed</div>
+      <div className="text-4xl">Check out community articles</div>
     </>
   );
 }
