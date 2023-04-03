@@ -4,6 +4,7 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useEffect, useRef, useState } from "react";
 import { TextArea } from "../../../components/TextArea";
+import ArticleCard from "../../../components/ArticleCard";
 
 export default function MainFeed() {
   const supabaseClient = useSupabaseClient();
@@ -45,6 +46,11 @@ export default function MainFeed() {
     <>
       <div className="text-7xl">Main Feed</div>
       <div className="text-4xl">Check out community articles</div>
+      <div>
+        {articles.map((article) => {
+          return (<ArticleCard article={article} key={article.id} />)
+        })}
+      </div>
     </>
   );
 }
