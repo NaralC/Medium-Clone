@@ -32,6 +32,21 @@ export default function Article() {
     }
   });
 
+  const deleteArticle = async () => {
+    try {
+      const { data, error } = await supabaseClient
+        .from("articles")
+        .delete()
+        .eq("id", id)
+        
+        if (error) throw error;
+        router.push("/mainFeed");
+
+    } catch (error) {
+      console.assert(error);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-10 text-center">
       <div className="text-7xl">{article.title}</div>
@@ -39,6 +54,14 @@ export default function Article() {
         posted by {article.user_email?.toLowerCase()}
       </div>
       <div className="text-xl">{article.content}</div>
+      {user && article.user_id === user.id ?
+      <>
+      <Button>Edit</Button>
+      <Button onClick={deleteArticle}>Delete</Button>
+      </>  
+      :
+      <></>
+    }
     </div>
   );
 }
