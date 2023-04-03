@@ -49,7 +49,6 @@ export default function CreateArticle() {
   const handleChange = (e: any) => {
     setArticleData({ ...articleData, [e.target.name]: e.target.value });
   };
-  console.log(articleData);
 
   const createArticle = async () => {
     try {
