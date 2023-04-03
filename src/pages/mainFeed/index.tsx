@@ -26,8 +26,6 @@ export default function MainFeed() {
           .select("*")
           .limit(10); // Most recent 10 articles
 
-        console.log(data);
-
         if (data !== null) {
           setArticles(data);
         }
@@ -35,13 +33,16 @@ export default function MainFeed() {
         console.assert(error);
       }
     };
-
-    if (effectRan.current === false) getArticles();
+    
+    if (effectRan.current === false) { 
+      getArticles();
+    }
 
     return () => {
       effectRan.current = true;
     };
   });
+
 
   return (
     <>

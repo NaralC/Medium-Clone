@@ -1,6 +1,6 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Text,
   Spacer,
@@ -20,28 +20,19 @@ export default function Article() {
   const [article, setArticle] = useState<any>({});
   const { id } = router.query; // For fetching article.id from `/article?id=${article.id}`
 
-  useEffect(() => {
-    // Fix infinite fetch
-    const getArticle = async () => {
-      const { data, error } = await supabaseClient
-        .from("articles")
-        .select("*")
-        .filter("id", "eq", id)
-        .single();
+  const getArticle = async () => {
+    const { data, error } = await supabaseClient
+      .from("articles")
+      .select("*")
+      .filter("id", "eq", id)
+      .single();
 
-      if (error) {
-        console.log(error);
-      } else {
-        setArticle(data);
-      }
-    };
-
-    if (typeof id !== "undefined") {
-      getArticle();
+    if (error) {
+      console.log(error);
+    } else {
+      setArticle(data);
     }
-
-    return () => {};
-  });
+  };
 
   const deleteArticle = async () => {
     try {
@@ -78,6 +69,15 @@ export default function Article() {
       console.assert(error);
     }
   }
+
+  useEffect(() => {
+    if (typeof id !== "undefined") {
+      getArticle();
+      console.log("fetched!")
+    }
+
+    return () => {};
+  }, [id]); // Having id as dependency prevents infinite loop
 
   // For edit article modal
   const [visible, setVisible] = useState(false);
