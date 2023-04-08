@@ -6,6 +6,8 @@ import { TextArea } from "../../../components/TextArea";
 import { Button } from "../../../components/Button";
 import { FormEvent, useState } from "react";
 
+// TODO: use this to help with useEffect -> getStaticProps
+
 export const getServerSideProps: GetServerSideProps = async (
   ctx: GetServerSidePropsContext
 ) => {
@@ -76,7 +78,7 @@ export default function CreateArticle() {
 
   return (
     <>
-      <div className="container flex flex-col gap-10">
+      <div className="flex flex-col gap-10">
         <div>
           <div>Title</div>
           <TextArea

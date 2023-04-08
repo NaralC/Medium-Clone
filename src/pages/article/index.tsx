@@ -12,27 +12,49 @@ import {
   Row,
 } from "@nextui-org/react";
 import { TextArea } from "../../../components/TextArea";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-export default function Article() {
+interface ArticleProps {
+  data: any;
+}
+
+export const getServerSideProps: GetServerSideProps<ArticleProps> = async (
+  context: GetServerSidePropsContext
+) => {
+  // Create authenticated Supabase Client
+  const supabaseClient = createServerSupabaseClient(context);
+
+  const { data, error } = await supabaseClient
+    .from("articles")
+    .select("*")
+    .filter("id", "eq", context.query.id) // get url query
+    .single();
+
+  if (error) {
+    console.assert(error);
+  } else {
+    // console.log(data);
+    console.log("data fetched for article!");
+  }
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+export default function Article({ data }: ArticleProps) {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
-  const [article, setArticle] = useState<any>({});
+  const [article, setArticle] = useState<any>(data);
   const { id } = router.query; // For fetching article.id from `/article?id=${article.id}`
-
-  const getArticle = async () => {
-    const { data, error } = await supabaseClient
-      .from("articles")
-      .select("*")
-      .filter("id", "eq", id)
-      .single();
-
-    if (error) {
-      console.log(error);
-    } else {
-      setArticle(data);
-    }
-  };
 
   const deleteArticle = async () => {
     try {
@@ -49,7 +71,11 @@ export default function Article() {
   };
 
   const editArticle = async () => {
-    if (newDescriptionRef.current?.value === "" || newTitleRef.current?.value === "") return;
+    if (
+      newDescriptionRef.current?.value === "" ||
+      newTitleRef.current?.value === ""
+    )
+      return;
 
     try {
       const { error } = await supabaseClient
@@ -63,21 +89,12 @@ export default function Article() {
         .eq("id", id);
 
       if (error) throw error;
-      router.push(`/article?id=${id}`);
-
+      router.reload();
+      // router.push(`/article?id=${id}`);
     } catch (error) {
       console.assert(error);
     }
-  }
-
-  useEffect(() => {
-    if (typeof id !== "undefined") {
-      getArticle();
-      console.log("fetched!")
-    }
-
-    return () => {};
-  }, [id]); // Having id as dependency prevents infinite loop
+  };
 
   // For edit article modal
   const [visible, setVisible] = useState(false);

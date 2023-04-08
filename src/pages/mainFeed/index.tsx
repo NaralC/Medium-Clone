@@ -5,21 +5,46 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useEffect, useRef, useState } from "react";
 import { TextArea } from "../../../components/TextArea";
 import ArticleCard from "../../../components/ArticleCard";
-import { GetStaticPathsContext, GetStaticProps } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetStaticPathsContext,
+  GetStaticProps,
+} from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { usePagination } from "@mantine/hooks";
 
-// TODO: useEffect -> getStaticProps
+interface MainFeedProps {
+  data: any;
+}
 
 const ITEMS_PER_PAGE = 4;
 
-export const getStaticProps: GetStaticProps = (context) => {
+export const getServerSideProps: GetServerSideProps<MainFeedProps> = async (
+  context: GetServerSidePropsContext
+) => {
+  // Create authenticated Supabase Client
+  const supabaseClient = createServerSupabaseClient(context);
+
+  const { data, error } = await supabaseClient
+    .from("articles")
+    .select("*")
+    .limit(10); // Most recent 10 articles
+
+  if (error) {
+    console.assert(error);
+  } else {
+    console.log("data fetched for main feed!");
+  }
+
   return {
-    props: {},
+    props: {
+      data,
+    },
   };
 };
 
-export default function MainFeed() {
+export default function MainFeed({ data }: MainFeedProps) {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
@@ -45,34 +70,15 @@ export default function MainFeed() {
 
   const effectRan = useRef(false);
   useEffect(() => {
-    const getArticles = async () => {
-      try {
-        const { data, error } = await supabaseClient
-          .from("articles")
-          .select("*")
-          .limit(10); // Most recent 10 articles
-
-        if (error) {
-          console.assert(error);
-        }
-
-        if (data !== null) {
-          setArticles(data);
-          setVisibleArticles(data.slice(0, ITEMS_PER_PAGE));
-        }
-      } catch (error) {
-        console.assert(error);
-      }
-    };
-
     if (effectRan.current === false) {
-      getArticles();
+      setArticles(data);
+      setVisibleArticles(data.slice(0, ITEMS_PER_PAGE));
     }
 
     return () => {
       effectRan.current = true;
     };
-  });
+  }, [data]);
 
   return (
     <>
