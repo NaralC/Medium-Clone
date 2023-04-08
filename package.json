@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
+    "@heroicons/react": "^2.0.17",
     "@mantine/hooks": "^6.0.6",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@supabase/auth-helpers-nextjs": "^0.5.6",
